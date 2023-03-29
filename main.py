@@ -6,7 +6,7 @@ from cyberark import *
 import logging
 import os
 
-log_level = os.environ.get("LOG_LEVEL", "INFO")
+log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
 
 logging.basicConfig(
     level=log_level,
@@ -22,10 +22,15 @@ def main():
     cyberark_base_url = envs["cyberark_base_url"]
     cyberark_user = envs["cyberark_user"]
     cyberark_pass = envs["cyberark_pass"]
+    cyberark_request_reason = envs["cyberark_request_reason"]
 
-    inventory = load_inventory(envs["ansible_inventory"])
-
-    make_cyberark_requests(cyberark_base_url, cyberark_user, cyberark_pass)
+    build_inventory(
+        envs["ansible_inventory"],
+        cyberark_base_url,
+        cyberark_user,
+        cyberark_pass,
+        cyberark_request_reason,
+    )
 
 
 if __name__ == "__main__":
