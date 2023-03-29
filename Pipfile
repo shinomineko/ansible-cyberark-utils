@@ -10,6 +10,7 @@ ansible = "*"
 [dev-packages]
 pytest = "*"
 black = "*"
+requests-mock = "*"
 
 [requires]
 python_version = "3.10"
