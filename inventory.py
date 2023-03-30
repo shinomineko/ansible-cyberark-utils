@@ -5,6 +5,7 @@ from ansible.vars.manager import VariableManager
 from cyberark import *
 import requests
 import os
+
 # import configparser
 
 logger = logging.getLogger(__name__)
@@ -41,7 +42,12 @@ def load_inventory(inventory_file):
     return inventory
 
 
-def build_inventory(inventory_file, cyberark_base_url, cyberark_user, cyberark_pass, cyberark_request_reason
+def build_inventory(
+    inventory_file,
+    cyberark_base_url,
+    cyberark_user,
+    cyberark_pass,
+    cyberark_request_reason,
 ):
     session = requests.Session()
     session_token = "some-token"
@@ -63,6 +69,9 @@ def build_inventory(inventory_file, cyberark_base_url, cyberark_user, cyberark_p
             ip=item["ip"],
             os_user=item["user"],
         )
+
+        item.update({"account_id": account_id})
+
         password = cyberark_get_password(
             session=session,
             session_token=session_token,
@@ -81,6 +90,7 @@ def build_inventory(inventory_file, cyberark_base_url, cyberark_user, cyberark_p
 
 def update_password_to_ini_inventory(inventory, inventory_file):
     inventory_lines = []
+
     with open(inventory_file, "r") as file:
         inventory_lines = [line.strip() for line in file]
     file.close()
@@ -91,11 +101,12 @@ def update_password_to_ini_inventory(inventory, inventory_file):
                 inventory_lines[idx] = f"{line} ansible_password=\"{item['password']}\""
 
     logger.debug(inventory_lines)
+
     os.remove(inventory_file)
 
     with open(inventory_file, "w") as file:
         for line in inventory_lines:
-            file.write(line + "\n")
+            file.write(f"{line}\n")
     file.close()
 
     return
