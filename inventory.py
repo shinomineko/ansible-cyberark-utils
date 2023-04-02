@@ -1,12 +1,14 @@
 import logging
-from ansible.parsing.dataloader import DataLoader
-from ansible.inventory.manager import InventoryManager
-from ansible.vars.manager import VariableManager
-from cyberark import *
-import requests
 import os
 
-# import configparser
+import requests
+from ansible.inventory.manager import InventoryManager
+from ansible.parsing.dataloader import DataLoader
+from ansible.vars.manager import VariableManager
+from ansible_vault import Vault
+from environs import Env
+
+from cyberark import *
 
 logger = logging.getLogger(__name__)
 
@@ -44,21 +46,21 @@ def load_inventory(inventory_file):
 
 def build_inventory(
     inventory_file,
+    use_vault,
     cyberark_base_url,
     cyberark_user,
     cyberark_pass,
     cyberark_request_reason,
 ):
-    session = requests.Session()
-    session_token = "some-token"
-    # session_token = cyberark_logon(
-    #     session=session,
-    #     base_url=cyberark_base_url,
-    #     cyberark_user=cyberark_user,
-    #     cyberark_pass=cyberark_pass,
-    # )
-
     inventory = load_inventory(inventory_file)
+
+    session = requests.Session()
+    session_token = cyberark_logon(
+        session=session,
+        base_url=cyberark_base_url,
+        cyberark_user=cyberark_user,
+        cyberark_pass=cyberark_pass,
+    )
 
     for item in inventory:
         logger.info(item)
@@ -82,8 +84,13 @@ def build_inventory(
 
         item.update({"password": password})
 
-    logger.debug(inventory)
-    update_password_to_ini_inventory(inventory=inventory, inventory_file=inventory_file)
+    logger.debug(f"inventory: {inventory}")
+    if use_vault:
+        create_host_vars_vault(inventory=inventory)
+    else:
+        update_password_to_ini_inventory(
+            inventory=inventory, inventory_file=inventory_file
+        )
 
     return
 
@@ -108,5 +115,29 @@ def update_password_to_ini_inventory(inventory, inventory_file):
         for line in inventory_lines:
             file.write(f"{line}\n")
     file.close()
+
+    return
+
+
+def create_host_vars_vault(inventory):
+    env = Env()
+    env.read_env()
+    vault_pass = env("ANSIBLE_VAULT_PASS")
+
+    vault = Vault(vault_pass)
+
+    if not os.path.exists("host_vars"):
+        logger.info("host_vars directory does not exist. creating...")
+        os.makedirs("host_vars")
+        logger.info("created host_vars directory")
+
+    for host in inventory:
+        json_data = {"ansible_password": host["password"]}
+
+        logger.info(
+            f"creating host_vars file for {host['ip']} at host_vars/{host['ip']}.yml"
+        )
+        with open(f"host_vars/{host['ip']}.yml", "w") as vf:
+            vault.dump_raw(json.dumps(json_data).encode("utf-8"), vf)
 
     return

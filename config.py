@@ -1,6 +1,6 @@
 import logging
-from environs import Env
 
+from environs import Env
 
 logger = logging.getLogger(__name__)
 

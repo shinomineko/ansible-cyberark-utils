@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-from config import *
-from inventory import *
-from cyberark import *
 import logging
+
 from environs import Env
+
+from config import *
+from cyberark import *
+from inventory import *
 
 env = Env()
 env.read_env()
@@ -25,9 +27,11 @@ def main():
     cyberark_user = envs["cyberark_user"]
     cyberark_pass = envs["cyberark_pass"]
     cyberark_request_reason = envs["cyberark_request_reason"]
+    ansible_use_vault = envs["ansible_use_vault"]
 
     build_inventory(
         envs["ansible_inventory"],
+        ansible_use_vault,
         cyberark_base_url,
         cyberark_user,
         cyberark_pass,
