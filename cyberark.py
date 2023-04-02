@@ -6,21 +6,22 @@ logger = logging.getLogger(__name__)
 
 
 def cyberark_logon(session, base_url, cyberark_user, cyberark_pass):
-    url = f"{base_url}/PasswordVault/WebServices/auth/Cyberark/CyberArkAuthenticationService.svc/Logon"
-    headers = {"Content-Type": "application/json"}
-    payload = {"username": cyberark_user, "password": cyberark_pass}
-    json_payload = json.dumps(payload)
+    # url = f"{base_url}/PasswordVault/WebServices/auth/Cyberark/CyberArkAuthenticationService.svc/Logon"
+    # headers = {"Content-Type": "application/json"}
+    # payload = {"username": cyberark_user, "password": cyberark_pass}
+    # json_payload = json.dumps(payload)
 
-    json_response = session.post(
-        url=url,
-        headers=headers,
-        data=json_payload,
-        verify=False,
-        timeout=requests_timeout_seconds,
-    ).json()
+    # json_response = session.post(
+    #     url=url,
+    #     headers=headers,
+    #     data=json_payload,
+    #     verify=False,
+    #     timeout=requests_timeout_seconds,
+    # ).json()
 
-    session_token = json_response["CyberArkLogonResult"]
-    logger.debug(json_response)
+    # session_token = json_response["CyberArkLogonResult"]
+    # logger.debug(json_response)
+    session_token = "some-token"
     logger.debug(f"session token: {session_token}")
 
     return session_token

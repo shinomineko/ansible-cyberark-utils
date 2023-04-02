@@ -1,5 +1,5 @@
-from inventory import *
 from config import *
+from inventory import *
 
 
 def test_load_inventory():
