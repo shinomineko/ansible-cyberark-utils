@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 ansible = "*"
+environs = "*"
 
 [dev-packages]
 pytest = "*"

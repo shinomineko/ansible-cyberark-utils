@@ -4,9 +4,11 @@ from config import *
 from inventory import *
 from cyberark import *
 import logging
-import os
+from environs import Env
 
-log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
+env = Env()
+env.read_env()
+log_level = env.log_level("LOG_LEVEL", "INFO")
 
 logging.basicConfig(
     level=log_level,
