@@ -86,7 +86,7 @@ def build_inventory(
 
     logger.debug(f"inventory: {inventory}")
     if use_vault:
-        create_host_vars_vault(inventory=inventory)
+        create_host_vars_vault(inventory=inventory, base_dir=".")
     else:
         update_password_to_ini_inventory(
             inventory=inventory, inventory_file=inventory_file
@@ -119,25 +119,26 @@ def update_password_to_ini_inventory(inventory, inventory_file):
     return
 
 
-def create_host_vars_vault(inventory):
+def create_host_vars_vault(inventory, base_dir):
+    host_vars_dir = f"{base_dir}/host_vars"
     env = Env()
     env.read_env()
     vault_pass = env("ANSIBLE_VAULT_PASS")
 
     vault = Vault(vault_pass)
 
-    if not os.path.exists("host_vars"):
-        logger.info("host_vars directory does not exist. creating...")
-        os.makedirs("host_vars")
-        logger.info("created host_vars directory")
+    if not os.path.exists(host_vars_dir):
+        logger.info(f"{host_vars_dir}s does not exist. creating...")
+        os.makedirs(host_vars_dir)
+        logger.info(f"created {host_vars_dir}s")
 
     for host in inventory:
         json_data = {"ansible_password": host["password"]}
 
         logger.info(
-            f"creating host_vars file for {host['ip']} at host_vars/{host['ip']}.yml"
+            f"creating host_vars file for {host['ip']} at {host_vars_dir}/{host['ip']}.yml"
         )
-        with open(f"host_vars/{host['ip']}.yml", "w") as vf:
+        with open(f"{host_vars_dir}/{host['ip']}.yml", "w") as vf:
             vault.dump_raw(json.dumps(json_data).encode("utf-8"), vf)
 
     return
