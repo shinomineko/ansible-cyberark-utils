@@ -88,6 +88,9 @@ def build_inventory(
     if use_vault:
         create_host_vars_vault(inventory=inventory, base_dir=".")
     else:
+        logger.warning(
+            "!!! updating plaintext passwords in an inventory only works with ini format inventories. please set ANSIBLE_USE_VAULT=true for non-ini format !!!"
+        )
         update_password_to_ini_inventory(
             inventory=inventory, inventory_file=inventory_file
         )
