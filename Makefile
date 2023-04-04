@@ -1,5 +1,5 @@
 .PHONY: all
-all: format test
+all: format test requirements
 
 .PHONY: format
 format:
@@ -8,3 +8,7 @@ format:
 .PHONY: test
 test:
 	@pytest -v
+
+.PHONY: requirements
+requirements:
+	@pipenv requirements > requirements.txt
