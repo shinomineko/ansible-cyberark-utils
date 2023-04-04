@@ -131,9 +131,9 @@ def create_host_vars_vault(inventory, base_dir):
     vault = Vault(vault_pass)
 
     if not os.path.exists(host_vars_dir):
-        logger.info(f"{host_vars_dir}s does not exist. creating...")
+        logger.info(f"{host_vars_dir} does not exist. creating...")
         os.makedirs(host_vars_dir)
-        logger.info(f"created {host_vars_dir}s")
+        logger.info(f"created {host_vars_dir}")
 
     for host in inventory:
         json_data = {"ansible_password": host["password"]}
