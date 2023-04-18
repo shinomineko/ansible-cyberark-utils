@@ -40,7 +40,7 @@ def test_cyberark_get_password(requests_mock):
     want = "P@ssw0rdzz"
     requests_mock.post(
         f"{base_url}/PasswordVault/api/Accounts/{account_id}/password/retrieve",
-        text=want,
+        text='"P@ssw0rdzz"',
     )
 
     got = cyberark_get_password(
