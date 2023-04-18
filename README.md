@@ -1,8 +1,9 @@
 # ansible-cyberark-utils
 
 ## Usage
+
 ```shell
-$ docker run --rm -v "${PWD}:/app" ghcr.io/shinomineko/ansible-cyberark-utils:main --help
+$ docker run --rm -v "${PWD}:/workspace" ghcr.io/shinomineko/ansible-cyberark-utils:main --help
 usage: main.py [-h]
 
 options:
