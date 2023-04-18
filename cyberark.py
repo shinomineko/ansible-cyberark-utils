@@ -57,4 +57,4 @@ def cyberark_get_password(session, session_token, base_url, account_id, reason):
 
     logger.debug(response)
 
-    return response.text
+    return response.text.strip('"')
