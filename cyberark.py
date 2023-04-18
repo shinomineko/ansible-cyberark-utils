@@ -55,6 +55,6 @@ def cyberark_get_password(session, session_token, base_url, account_id, reason):
         timeout=requests_timeout_seconds,
     )
 
-    logger.debug(response)
+    logger.debug(response.json())
 
     return response.text.strip('"')
