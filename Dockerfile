@@ -7,4 +7,5 @@ FROM cgr.dev/chainguard/python:3.10
 WORKDIR /app
 COPY --from=builder /home/nonroot/.local/lib/python3.10/site-packages /home/nonroot/.local/lib/python3.10/site-packages
 COPY *.py .
+WORKDIR /workspace
 ENTRYPOINT [ "python", "/app/main.py" ]
