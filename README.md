@@ -1,5 +1,7 @@
 # ansible-cyberark-utils
 
+Tested with CyberArk 12.2.2
+
 ## Usage
 
 ```shell
