@@ -38,7 +38,7 @@ def test_cyberark_get_password(requests_mock):
     reason = "running test"
     account_id = "123abc"
     want = "P@ssw0rdzz"
-    requests_mock.get(
+    requests_mock.post(
         f"{base_url}/PasswordVault/api/Accounts/{account_id}/password/retrieve",
         text=want,
     )

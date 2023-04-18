@@ -47,7 +47,7 @@ def cyberark_get_password(session, session_token, base_url, account_id, reason):
     payload = {"actionType": "Show", "reason": reason}
     json_payload = json.dumps(payload)
 
-    response = session.get(
+    response = session.post(
         url=url,
         headers=headers,
         data=json_payload,
