@@ -45,19 +45,13 @@ ANSIBLE_VAULT_PASS   password for ansible vault. requires when ANSIBLE_USE_VAULT
     parser.parse_args()
 
     envs = load_env()
-    cyberark_base_url = envs["cyberark_base_url"]
-    cyberark_user = envs["cyberark_user"]
-    cyberark_pass = envs["cyberark_pass"]
-    cyberark_request_reason = envs["cyberark_request_reason"]
-    ansible_use_vault = envs["ansible_use_vault"]
-
     build_inventory(
         envs["ansible_inventory"],
-        ansible_use_vault,
-        cyberark_base_url,
-        cyberark_user,
-        cyberark_pass,
-        cyberark_request_reason,
+        envs["ansible_use_vault"],
+        envs["cyberark_base_url"],
+        envs["cyberark_user"],
+        envs["cyberark_pass"],
+        envs["cyberark_request_reason"],
     )
 
 
