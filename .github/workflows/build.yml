@@ -37,8 +37,8 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         images: |
-		  ghcr.io/${{ env.IMAGE_NAME }}
-		  docker.io/${{ env.IMAGE_NAME }}
+          ghcr.io/${{ env.IMAGE_NAME }}
+          docker.io/${{ env.IMAGE_NAME }}
 
     - name: build and push image
       uses: docker/build-push-action@v4
