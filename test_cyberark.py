@@ -48,3 +48,13 @@ def test_cyberark_get_password(requests_mock):
     )
 
     assert got == want
+
+
+def test_cyberark_logoff(requests_mock):
+    base_url = load_env()["cyberark_base_url"]
+    want = {}
+    requests_mock.post(f"{base_url}/PasswordVault/api/auth/logoff", json={})
+
+    got = cyberark_logoff(requests.Session(), "some-session-token", base_url)
+
+    assert got == want

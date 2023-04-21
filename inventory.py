@@ -95,6 +95,10 @@ def build_inventory(
             inventory=inventory, inventory_file=inventory_file
         )
 
+    _ = cyberark_logoff(
+        session=session, session_token=session_token, base_url=cyberark_base_url
+    )
+
     return
 
 
