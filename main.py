@@ -14,6 +14,7 @@ env = Env()
 env.read_env()
 log_level = env.log_level("LOG_LEVEL", "INFO")
 
+logging.captureWarnings(True)
 logging.basicConfig(
     level=log_level,
     format="%(asctime)s %(levelname)s %(module)s %(funcName)s %(message)s",
