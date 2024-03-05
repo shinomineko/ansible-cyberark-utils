@@ -132,3 +132,6 @@ dmypy.json
 play.yml
 host_vars/
 group_vars/
+
+# test keys
+*.pem

@@ -19,6 +19,7 @@ def load_env():
     envs["ansible_inventory"] = env("ANSIBLE_INVENTORY")
     envs["ansible_use_vault"] = env.bool("ANSIBLE_USE_VAULT", True)
     envs["ansible_vault_pass"] = env("ANSIBLE_VAULT_PASS")
+    envs["ansible_use_private_key"] = env.bool("ANSIBLE_USE_PRIVATE_KEY", False)
 
     logger.info(envs)
     return envs
