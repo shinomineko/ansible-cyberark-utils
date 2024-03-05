@@ -47,6 +47,7 @@ def load_inventory(inventory_file):
 def build_inventory(
     inventory_file,
     use_vault,
+    use_private_key,
     cyberark_base_url,
     cyberark_user,
     cyberark_pass,
@@ -85,8 +86,10 @@ def build_inventory(
         item.update({"password": password})
 
     logger.debug(f"inventory: {inventory}")
-    if use_vault:
-        create_host_vars_vault(inventory=inventory, base_dir=".")
+    if use_private_key:
+        create_host_vars_private_key(inventory=inventory, base_dir=".")
+    elif use_vault:
+        create_host_vars_password_vault(inventory=inventory, base_dir=".")
     else:
         logger.warning(
             "!!! updating plaintext passwords in an inventory only works with ini format inventories. please set ANSIBLE_USE_VAULT=true for non-ini format !!!"
@@ -126,7 +129,7 @@ def update_password_to_ini_inventory(inventory, inventory_file):
     return
 
 
-def create_host_vars_vault(inventory, base_dir):
+def create_host_vars_password_vault(inventory, base_dir):
     host_vars_dir = f"{base_dir}/host_vars"
     env = Env()
     env.read_env()
@@ -147,5 +150,40 @@ def create_host_vars_vault(inventory, base_dir):
         )
         with open(f"{host_vars_dir}/{host['ip']}.yml", "w") as vf:
             vault.dump_raw(json.dumps(json_data).encode("utf-8"), vf)
+
+    return
+
+
+def create_host_vars_private_key(inventory, base_dir):
+    host_vars_dir = f"{base_dir}/host_vars"
+    keys_dir = f"{host_vars_dir}/keys"
+    env = Env()
+    env.read_env()
+
+    if not os.path.exists(host_vars_dir):
+        logger.info(f"{host_vars_dir} does not exist. creating...")
+        os.makedirs(host_vars_dir)
+        logger.info(f"created {host_vars_dir}")
+
+    if not os.path.exists(keys_dir):
+        logger.info(f"{keys_dir} does not exist. creating...")
+        os.makedirs(keys_dir)
+        logger.info(f"created {keys_dir}")
+
+    for host in inventory:
+        logger.info(
+            f"creating key file for {host['ip']} at {keys_dir}/{host['ip']}.pem"
+        )
+        with open(f"{keys_dir}/{host['ip']}.pem", "w") as kf:
+            kf.write(host["password"])
+        kf.close()
+
+        logger.info(
+            f"creating host_vars file for {host['ip']} at {host_vars_dir}/{host['ip']}.yml"
+        )
+        with open(f"{host_vars_dir}/{host['ip']}.yml", "w") as hf:
+            content = f"ansible_ssh_private_key_file: host_vars/keys/{host['ip']}.pem\n"
+            hf.write(content)
+        hf.close()
 
     return
