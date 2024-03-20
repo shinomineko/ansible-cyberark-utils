@@ -8,7 +8,7 @@ def test_cyberark_logon(requests_mock):
     base_url = load_env()["cyberark_base_url"]
     want = "some-session-token"
     requests_mock.post(
-        f"{base_url}/PasswordVault/WebServices/auth/Cyberark/CyberArkAuthenticationService.svc/Logon",
+        f"{base_url}/PasswordVault/api/auth/Cyberark/logon",
         json={"CyberArkLogonResult": want},
     )
 
