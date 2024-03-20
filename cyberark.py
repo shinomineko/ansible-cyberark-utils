@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def cyberark_logon(session, base_url, cyberark_user, cyberark_pass):
-    url = f"{base_url}/PasswordVault/WebServices/auth/Cyberark/CyberArkAuthenticationService.svc/Logon"
+    url = f"{base_url}/PasswordVault/api/auth/Cyberark/logon"
     headers = {"Content-Type": "application/json"}
     payload = {"username": cyberark_user, "password": cyberark_pass}
     json_payload = json.dumps(payload)
