@@ -13,7 +13,7 @@ def cyberark_logon(session, base_url, cyberark_user, cyberark_pass):
     payload = {"username": cyberark_user, "password": cyberark_pass}
     json_payload = json.dumps(payload)
 
-    json_response = session.post(
+    session_token = session.post(
         url=url,
         headers=headers,
         data=json_payload,
@@ -21,8 +21,6 @@ def cyberark_logon(session, base_url, cyberark_user, cyberark_pass):
         timeout=requests_timeout_seconds,
     ).json()
 
-    session_token = json_response["CyberArkLogonResult"]
-    logger.debug(json_response)
     logger.debug(f"session token: {session_token}")
 
     return session_token
@@ -60,7 +58,7 @@ def cyberark_get_password(session, session_token, base_url, account_id, reason):
         timeout=requests_timeout_seconds,
     )
 
-    logger.debug(response.json())
+    logger.debug(response)
 
     return response.text.strip('"')
 
