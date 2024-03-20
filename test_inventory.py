@@ -69,9 +69,13 @@ def test_create_host_vars_private_key(tmpdir):
     create_host_vars_private_key(inventory, tmpdir)
     want = {}
     got = {}
-    want['host_vars'] = """ansible_ssh_private_key_file: host_vars/keys/192.168.3.3.pem
+    want[
+        "host_vars"
+    ] = """ansible_ssh_private_key_file: host_vars/keys/192.168.3.3.pem
 """
-    want['key'] = """-----BEGIN RSA PRIVATE KEY-----
+    want[
+        "key"
+    ] = """-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAtHD3NoEryvsUhguqyqFVU9cSRJSJ13ZeoeLuLO0rsuZPQP1J
 uqLTNT39yrHnbVKbX2BDbqlL38+YpRfNI3NqDkPmYTHdtAgSiFxBqzZdLgcaSVxY
 JoDny3+u9TKYGvHr+Jl4ELoxhzYc7I8GDVwWdc34x+oC4Cct7487MxSjJNiVh7Td
@@ -99,6 +103,6 @@ fMNh0cOKIBpsqDOk+kkdL7RNkQq/cBRn2hS5cV2PRoxbF0hND9DZ4oxNsTIAt8hp
 K2rqktr2JPMynWBjFOSGaQWOouUSlRXzvUBf4Dq2zBKHhzzc+Zv+
 -----END RSA PRIVATE KEY-----
 """
-    got['host_vars'] = host_var_file.read()
-    got['key'] = key_file.read()
+    got["host_vars"] = host_var_file.read()
+    got["key"] = key_file.read()
     assert got == want
