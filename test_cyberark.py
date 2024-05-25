@@ -14,7 +14,9 @@ def test_cyberark_logon(requests_mock):
 
     got = cyberark_logon(requests.Session(), base_url, "user", "pass")
 
-    assert got == want # broken test, the response was a json without a key: {'some-session-token'}
+    assert (
+        got == want
+    )  # broken test, the response was a json without a key: {'some-session-token'}
 
 
 def test_cyberark_get_account_id(requests_mock):
