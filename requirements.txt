@@ -1,6 +1,6 @@
 -i https://pypi.org/simple
 ansible==10.4.0
-ansible-core==2.17.4 ; python_version >= '3.10'
+ansible-core==2.17.6 ; python_version >= '3.10'
 ansible-vault==2.1.0
 certifi==2024.8.30 ; python_version >= '3.6'
 cffi==1.17.1 ; platform_python_implementation != 'PyPy'
