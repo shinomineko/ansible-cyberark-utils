@@ -12,3 +12,7 @@ test:
 .PHONY: requirements
 requirements:
 	@pipenv requirements > requirements.txt
+
+.PHONY: docker
+docker:
+	@docker build -t shinomineko/ansible-cyberark-utils:test .
