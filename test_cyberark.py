@@ -9,14 +9,12 @@ def test_cyberark_logon(requests_mock):
     want = "some-session-token"
     requests_mock.post(
         f"{base_url}/PasswordVault/api/auth/Cyberark/logon",
-        json={"CyberArkLogonResult": want},
+        json=want,
     )
 
     got = cyberark_logon(requests.Session(), base_url, "user", "pass")
 
-    assert (
-        got == want
-    )  # broken test, the response was a json without a key: {'some-session-token'}
+    assert got == want
 
 
 def test_cyberark_get_account_id(requests_mock):
