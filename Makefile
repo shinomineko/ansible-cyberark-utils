@@ -3,15 +3,15 @@ all: format test requirements
 
 .PHONY: format
 format:
-	@black --target-version py310 .
+	@uv run black --target-version py313 .
 
 .PHONY: test
 test:
-	@pytest -v
+	@uv run pytest -v
 
 .PHONY: requirements
 requirements:
-	@pipenv requirements > requirements.txt
+	@uv export --format requirements-txt --no-dev > requirements.txt
 
 .PHONY: docker
 docker:
