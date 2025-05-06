@@ -1,3 +1,16 @@
 [tools]
 python = "3.13"
 uv = "latest"
+
+[tasks.format]
+run = "uv run black --target-version py313 ."
+
+[tasks.test]
+run = "uv run pytest -v"
+
+[tasks.requirements]
+run = "uv export --format requirements-txt --no-dev > requirements.txt"
+
+[tasks.docker]
+depends = ["requirements"]
+run = "docker build -t shinomineko/ansible-cyberark-utils:test ."
